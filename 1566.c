@@ -33,11 +33,27 @@ void ImprimeErd (árvore r) {
     }
 }
 
+void ImprimeRED (árvore r) {
+    if (r != NULL) {
+        printf("%d ", r->altura);
+        ImprimeRED(r->esq);
+        ImprimeRED(r->dir);
+    }
+}
+
 void LiberaArvore(árvore r) {
     if (r != NULL) {
         LiberaArvore(r->esq);
         LiberaArvore(r->dir);
         free(r);
+    }
+}
+
+void ImprimeEDR (árvore r) {
+    if (r != NULL) {
+        ImprimeEDR(r->esq);
+        ImprimeEDR (r->dir);
+        printf("%d ", r->altura);
     }
 }
 
@@ -60,8 +76,12 @@ int main() {
             scanf("%d", &novo->altura);
             r = Insere (r, novo);
         }
-        ImprimeErd(r);
-        LiberaArvore(r);
+        ImprimeErd (r);
+        printf ("\n");
+        ImprimeRED (r);
+        printf ("\n");
+        ImprimeEDR (r);
+        LiberaArvore (r);
     }
 
     return 0;
