@@ -1,88 +1,77 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
-struct cel {
-    int altura;
-    struct cel *esq;
-    struct cel *dir;
+struct No{
+	int valor;
+	int contagem;
+	struct No *esquerda;
+	struct No *direita;
 };
 
-typedef struct cel nó;
-
-typedef nó *árvore;
-
-árvore Insere (árvore r, nó *novo) {
-    nó *f, *p;
-    if (r == NULL) return novo;
-    f = r;
-    while (f != NULL) {
-        p = f;
-        if (f->altura > novo->altura) f = f->esq;
-        else f = f->dir;
-    }
-    if (p->altura > novo->altura) p->esq = novo;
-    else p->dir = novo;
-    return r;
+struct No *novoNo(int v){
+	struct No *novo = (struct No *) malloc(sizeof(struct No));
+	novo->valor = v;
+	novo->contagem = 1;
+	novo->esquerda = NULL;
+	novo->direita = NULL;
+	return novo;
 }
 
-void ImprimeErd (árvore r) {
-    if (r != NULL) {
-        ImprimeErd (r->esq);
-        printf ("%d ", r->altura);
-        ImprimeErd (r->dir);
-    }
+struct No *inserir(struct No *raiz, int v){
+	if (raiz == NULL){
+		return novoNo(v);
+	}
+
+	if (v < raiz->valor){
+		raiz->esquerda = inserir(raiz->esquerda, v);
+	} 
+    else if (v > raiz->valor){
+		raiz->direita = inserir(raiz->direita, v);
+	} 
+    else if (v == raiz->valor){
+		raiz->contagem++;
+	}
+
+	return raiz;
 }
 
-void ImprimeRED (árvore r) {
-    if (r != NULL) {
-        printf("%d ", r->altura);
-        ImprimeRED(r->esq);
-        ImprimeRED(r->dir);
-    }
+void leitura(struct No*raiz, int *primeiro){
+	if (raiz != NULL){
+		leitura(raiz->esquerda, primeiro);
+		for (int j = 0; j < raiz->contagem; j++){
+			if (! (*primeiro)) printf(" ");
+			printf("%d", raiz->valor);
+			*primeiro = 0;
+		}
+		leitura(raiz->direita, primeiro);
+	}
 }
 
-void LiberaArvore(árvore r) {
-    if (r != NULL) {
-        LiberaArvore(r->esq);
-        LiberaArvore(r->dir);
-        free(r);
-    }
-}
+int main(){
+	int NC, N;
+	scanf("%d", &NC);
+	int *v = (int *) malloc(3000000 * sizeof(int));
 
-void ImprimeEDR (árvore r) {
-    if (r != NULL) {
-        ImprimeEDR(r->esq);
-        ImprimeEDR (r->dir);
-        printf("%d ", r->altura);
-    }
-}
+	while (NC>0){
+		scanf("%d", &N);
 
-int main() {
+		for (int i = 0; i < N; i++){
+			scanf("%d", &v[i]);
+		}
 
-    int NC, N;
-    
-    printf("Qntd de cidades:");
-    scanf("%d", &NC);
+		struct No *raiz = inserir(NULL, v[0]);
 
-    for(int i=0; i<NC; i++) {
-        árvore r = NULL;
-        printf("\nQntd de habitantes cidade %d: ", i+1);
-        scanf("%d", &N);
-        for (int j = 0; j < N; j++) {
-            nó *novo = malloc(sizeof(nó)); 
-            novo->esq = NULL;
-            novo->dir = NULL;
-            printf("Altura do habitante %d: ", j+1);
-            scanf("%d", &novo->altura);
-            r = Insere (r, novo);
-        }
-        ImprimeErd (r);
-        printf ("\n");
-        ImprimeRED (r);
-        printf ("\n");
-        ImprimeEDR (r);
-        LiberaArvore (r);
-    }
+		for (int i = 1; i < N; i++){
+			inserir(raiz, v[i]);
+		}
 
-    return 0;
+		int primeiro = 1;
+		leitura(raiz, &primeiro);
+		printf("\n");
+
+		NC--;
+	}
+
+	return 0;
 }
