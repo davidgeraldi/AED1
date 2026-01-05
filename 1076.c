@@ -1,36 +1,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define MAX_NODES 50
+#define MAX_NOS 50
 
 int movimentos;
 
-typedef struct Node {
+typedef struct No {
     int vizinho;
-    struct Node *proximo;
-} Node;
+    struct No *proximo;
+} No;
 
-Node *adj[MAX_NODES]; 
-int visitado[MAX_NODES];
+No *adj [MAX_NOS]; 
+int visitado [MAX_NOS];
 
-void addEdge(int u, int v) {
-    Node *newNode_uv = (Node *)malloc(sizeof(Node));
-    if (newNode_uv == NULL) exit(1);
-    newNode_uv->vizinho = v;
-    newNode_uv->proximo = adj[u];
-    adj[u] = newNode_uv;
+void addAresta (int u, int v) {
+    No *novoNo_uv = malloc (sizeof (No));
+    if (novoNo_uv == NULL) exit (1);
+    novoNo_uv->vizinho = v;
+    novoNo_uv->proximo = adj[u];
+    adj[u] = novoNo_uv;
 
-    Node *newNode_vu = (Node *)malloc(sizeof(Node));
-    if (newNode_vu == NULL) exit(1);
-    newNode_vu->vizinho = u;
-    newNode_vu->proximo = adj[v];
-    adj[v] = newNode_vu;
+    No *novoNo_vu = malloc (sizeof (No));
+    if (novoNo_vu == NULL) exit (1);
+    novoNo_vu->vizinho = u;
+    novoNo_vu->proximo = adj[v];
+    adj[v] = novoNo_vu;
 }
 
-void DFS(int u) {
+void DFS (int u) {
     visitado[u] = 1;
     
-    Node *atual = adj[u];
+    No *atual = adj[u];
     while (atual != NULL) {
         int v = atual->vizinho;
         
@@ -44,7 +44,7 @@ void DFS(int u) {
     }
 }
 
-void solve() {
+void resolverLabirinto () {
     int N, M, S; 
     int u, v; 
     
@@ -53,29 +53,29 @@ void solve() {
     if (scanf("%d %d", &N, &M) != 2) return;
     
     movimentos = 0;
-    for (int i = 0; i < MAX_NODES; i++) {
+    for (int i = 0; i < MAX_NOS; i++) {
         adj[i] = NULL;    
         visitado[i] = 0; 
     }
 
     for (int i = 0; i < M; i++) {
         if (scanf("%d %d", &u, &v) != 2) return;
-        if (u >= MAX_NODES || v >= MAX_NODES) {
+        if (u >= MAX_NOS || v >= MAX_NOS) {
             continue; 
         }
-        addEdge(u, v);
+        addAresta (u, v);
     }
 
-    DFS(S); 
+    DFS (S); 
 
-    printf("%d\n", movimentos);
+    printf ("%d\n", movimentos);
     
-    for (int i = 0; i < MAX_NODES; i++) {
-        Node *atual = adj[i];
+    for (int i = 0; i < MAX_NOS; i++) {
+        No *atual = adj[i];
         while (atual != NULL) {
-            Node *temp = atual;
+            No *temp = atual;
             atual = atual->proximo;
-            free(temp);
+            free (temp);
         }
     }
 }
@@ -85,7 +85,7 @@ int main() {
     if (scanf("%d", &T) != 1) return 0;
     
     while (T--) {
-        solve();
+        resolverLabirinto();
     }
     return 0;
 }

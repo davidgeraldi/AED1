@@ -3,25 +3,24 @@
 #include <string.h>
 #include <stdbool.h>
 
-// Tamanho do tabuleiro (8x8)
-#define BOARD_SIZE 8
+#define TAM_BORDA 8
 
-// Fila para a BFS
+// Fila para a BuscaBFS
 typedef struct {
-    int r, c; // Coordenadas (linha, coluna)
+    int lin, col; // Coordenadas (linha, coluna)
     int dist; // Distância (número de movimentos)
-} QueueItem;
+} Fila;
 
-QueueItem queue[BOARD_SIZE * BOARD_SIZE];
-int head, tail;
+Fila tabuleiro [TAM_BORDA * TAM_BORDA];
+int cabeca, cauda;
 
 // Array para armazenar a menor distância (movimentos)
 // dist[r][c] = menor número de movimentos para alcançar (r, c)
-int dist[BOARD_SIZE + 1][BOARD_SIZE + 1];
+int dist [TAM_BORDA + 1][TAM_BORDA + 1];
 
 // Array de movimentos possíveis do Cavalo (dr, dc)
 // [dr, dc]
-int moves[8][2] = {
+int movimentos[8][2] = {
     {-2, -1}, {-2, 1}, // Duas para cima, uma para os lados
     {-1, -2}, {-1, 2}, // Uma para cima, duas para os lados
     { 1, -2}, { 1, 2}, // Uma para baixo, duas para os lados
@@ -31,57 +30,57 @@ int moves[8][2] = {
 // --- Funções Auxiliares ---
 
 // Converte a coordenada do xadrez (ex: "a1") para (linha, coluna 1-base)
-void parse_coord(const char *s, int *r, int *c) {
+void ConverteStr (const char *s, int *lin, int *col) {
     // Coluna: 'a' (97) -> 1, 'h' (104) -> 8
-    *c = s[0] - 'a' + 1;
+    *col = s[0] - 'a' + 1;
     // Linha: '1' (49) -> 1, '8' (56) -> 8
-    *r = s[1] - '0';
+    *lin = s[1] - '0';
 }
 
 // Verifica se uma coordenada é válida (dentro do tabuleiro)
-bool is_valid(int r, int c) {
-    return r >= 1 && r <= BOARD_SIZE && c >= 1 && c <= BOARD_SIZE;
+bool EhValida (int lin, int col) {
+    return lin >= 1 && lin <= TAM_BORDA && col >= 1 && col <= TAM_BORDA;
 }
 
-// --- Algoritmo BFS ---
+// --- Algoritmo BuscaBFS ---
 
-int bfs(int start_r, int start_c, int end_r, int end_c) {
-    if (start_r == end_r && start_c == end_c) {
+int BuscaBFS (int inicio_lin, int inicio_col, int fim_lin, int fim_col) {
+    if (inicio_lin == fim_lin && inicio_col == fim_col) {
         return 0;
     }
 
     // Inicializa distâncias (INF) e Fila
-    for (int i = 1; i <= BOARD_SIZE; i++) {
-        for (int j = 1; j <= BOARD_SIZE; j++) {
+    for (int i = 1; i <= TAM_BORDA; i++) {
+        for (int j = 1; j <= TAM_BORDA; j++) {
             dist[i][j] = -1; // -1 significa não visitado
         }
     }
-    head = tail = 0;
+    cabeca = cauda = 0;
 
     // Adiciona o nó inicial à fila
-    queue[tail++] = (QueueItem){start_r, start_c, 0};
-    dist[start_r][start_c] = 0;
+    tabuleiro[cauda++] = (Fila) { inicio_lin, inicio_col, 0 };
+    dist[inicio_lin][inicio_col] = 0;
 
-    while (head < tail) {
-        QueueItem current = queue[head++];
-        int r = current.r;
-        int c = current.c;
-        int d = current.dist;
+    while (cabeca < cauda) {
+        Fila atual = tabuleiro[cabeca++];
+        int linha = atual.lin;
+        int coluna = atual.col;
+        int distancia = atual.dist;
 
         // Verifica se o destino foi alcançado
-        if (r == end_r && c == end_c) {
-            return d;
+        if (linha == fim_lin && coluna == fim_col) {
+            return distancia;
         }
 
         // Explora os 8 movimentos possíveis do Cavalo
         for (int i = 0; i < 8; i++) {
-            int next_r = r + moves[i][0];
-            int next_c = c + moves[i][1];
+            int prox_lin = linha + movimentos[i][0];
+            int prox_col = coluna + movimentos[i][1];
 
-            if (is_valid(next_r, next_c) && dist[next_r][next_c] == -1) {
+            if (EhValida (prox_lin, prox_col) && dist[prox_lin][prox_col] == -1) {
                 // Marca como visitado e adiciona à fila
-                dist[next_r][next_c] = d + 1;
-                queue[tail++] = (QueueItem){next_r, next_c, d + 1};
+                dist[prox_lin][prox_col] = distancia + 1;
+                tabuleiro[cauda++] = (Fila) { prox_lin, prox_col, distancia + 1 };
             }
         }
     }
@@ -93,19 +92,19 @@ int bfs(int start_r, int start_c, int end_r, int end_c) {
 // --- Função Principal ---
 
 int main() {
-    char start_str[3], end_str[3];
+    char inicio_str[3], fim_str[3];
 
     // O loop continua lendo pares de coordenadas até EOF
-    while (scanf("%s %s", start_str, end_str) == 2) {
-        int start_r, start_c;
-        int end_r, end_c;
+    while (scanf ("%s %s", inicio_str, fim_str) == 2) {
+        int inicio_lin, inicio_col;
+        int fim_lin, fim_col;
 
-        parse_coord(start_str, &start_r, &start_c);
-        parse_coord(end_str, &end_r, &end_c);
+        ConverteStr (inicio_str, &inicio_lin, &inicio_col);
+        ConverteStr (fim_str, &fim_lin, &fim_col);
 
-        int min_moves = bfs(start_r, start_c, end_r, end_c);
+        int min_movimentos = BuscaBFS (inicio_lin, inicio_col, fim_lin, fim_col);
 
-        printf("To get from %s to %s takes %d knight moves.\n", start_str, end_str, min_moves);
+        printf ("To get from %s to %s takes %d knight movimentos.\n", inicio_str, fim_str, min_movimentos);
     }
 
     return 0;

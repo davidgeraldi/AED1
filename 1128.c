@@ -1,137 +1,110 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
 #include <string.h>
 
-#define MAX_NODES 2001 // N <= 2000
+#define MAX_NOS 2001 
 
-// Estrutura para o nó da Lista de Adjacência
-typedef struct AdjNode {
+typedef struct No {
     int dest;
-    struct AdjNode *next;
-} AdjNode;
+    struct No *prox;
+} No;
 
-// --- Variáveis Globais ---
 int N; // Número de intersecções
 int M; // Número de ruas
-AdjNode *adj_original[MAX_NODES];
-AdjNode *adj_reverse[MAX_NODES];
+No *adj_original[MAX_NOS]; 
+No *adj_reverso[MAX_NOS];
 
-
-// --- Funções Auxiliares de Grafo ---
-
-// Adiciona uma aresta U -> V na lista de adjacência especificada
-void add_edge(AdjNode *adj_list[], int u, int v) {
-    AdjNode *new_node = (AdjNode *)malloc(sizeof(AdjNode));
-    new_node->dest = v;
-    new_node->next = adj_list[u];
-    adj_list[u] = new_node;
+void InsereAresta (No *adj_lista[], int u, int v) {
+    No *novoNo = malloc (sizeof (No));
+    novoNo->dest = v;
+    novoNo->prox = adj_lista[u];
+    adj_lista[u] = novoNo;
 }
 
-// Limpa a memória da lista de adjacência (Evita Memory Leak entre casos de teste)
-void free_adj_list(AdjNode *adj_list[]) {
+void LimparLista (No *adj_lista[]) {
     for (int i = 1; i <= N; i++) {
-        AdjNode *curr = adj_list[i];
-        while (curr != NULL) {
-            AdjNode *temp = curr;
-            curr = curr->next;
-            free(temp);
+        No *atual = adj_lista[i];
+        while (atual != NULL) {
+            No *temp = atual;
+            atual = atual->prox;
+            free (temp);
         }
-        adj_list[i] = NULL;
+        adj_lista[i] = NULL;
     }
 }
 
-// --- Algoritmo de Busca em Profundidade (DFS) ---
+void BuscaDFS (No *adj_lista[], int u, int visitado[]) {
+    visitado[u] = 1;
 
-/**
- * @brief Executa DFS para verificar quais nós são alcançáveis a partir do nó 'u'.
- */
-void dfs(AdjNode *adj_list[], int u, bool visited[]) {
-    visited[u] = true;
-
-    AdjNode *curr = adj_list[u];
-    while (curr != NULL) {
-        int v = curr->dest;
-        if (!visited[v]) {
-            dfs(adj_list, v, visited);
+    No *atual = adj_lista[u];
+    while (atual != NULL) {
+        int v = atual->dest;
+        if (!visitado[v]) {
+            BuscaDFS (adj_lista, v, visitado);
         }
-        curr = curr->next;
+        atual = atual->prox;
     }
 }
-
-// --- Função Main (Loop de Casos de Teste) ---
 
 int main() {
     
-    int current_N, current_M;
+    int atual_N, atual_M;
 
-    // Loop principal: Lê N e M, e continua enquanto não for 0 0
-    while(scanf("%d %d", &current_N, &current_M) == 2 && (current_N != 0 || current_M != 0)) {
+    while (scanf("%d %d", &atual_N, &atual_M) == 2 && (atual_N != 0 || atual_M != 0)) {
         
-        // 1. Atribuição e Inicialização
-        N = current_N; // Variável global N
-        M = current_M; // Variável global M
+        N = atual_N; 
+        M = atual_M; 
 
         for (int i = 1; i <= N; i++) {
             adj_original[i] = NULL;
-            adj_reverse[i] = NULL;
+            adj_reverso[i] = NULL;
         }
 
-        // 2. Leitura e Construção do Grafo (Original e Reverso)
+        //ler e construir grafo original e reverso
         for (int i = 0; i < M; i++) {
             int V, W, P;
-            if (scanf("%d %d %d", &V, &W, &P) != 3) break;
+            if (scanf ("%d %d %d", &V, &W, &P) != 3) break;
 
-            // P=1: Mão única V -> W
-            add_edge(adj_original, V, W);
-            add_edge(adj_reverse, W, V); // Reverso: W -> V
+            InsereAresta (adj_original, V, W);
+            InsereAresta (adj_reverso, W, V); 
 
-            // P=2: Mão dupla V <-> W
+            // P=2 mão dupla V <-> W
             if (P == 2) {
-                add_edge(adj_original, W, V);
-                add_edge(adj_reverse, V, W); // Reverso: V -> W
+                InsereAresta (adj_original, W, V);
+                InsereAresta (adj_reverso, V, W); 
             }
         }
+        
+        int conexaoForte = 1;
+        int noInicial = 1;
 
-        // 3. Verificação de Conexão Forte (Duas DFSs)
-        
-        bool is_strongly_connected = true;
-        int pivot = 1; // Nó de partida arbitrário
-        
-        // --- A. Primeira DFS: Conexão de Saída (1 -> Todos) ---
-        // Checa se o Pivô alcança TODOS os nós no grafo original.
-        bool visited_out[MAX_NODES] = {false};
-        dfs(adj_original, pivot, visited_out);
+        int saida_visitado[MAX_NOS] = {0};
+        BuscaDFS (adj_original, noInicial, saida_visitado);
         
         for (int i = 1; i <= N; i++) {
-            if (!visited_out[i]) {
-                is_strongly_connected = false;
+            if (!saida_visitado[i]) {
+                conexaoForte = 0;
                 break;
             }
         }
         
-        if (is_strongly_connected) {
-            // --- B. Segunda DFS: Conexão de Entrada (Todos -> 1) ---
-            // Checa se o Pivô é alcançado por TODOS (rodando a DFS no Grafo Reverso).
-            
-            // Reinicializa o array visited
-            bool visited_in[MAX_NODES] = {false};
-            dfs(adj_reverse, pivot, visited_in);
+        if (conexaoForte) {
+
+            int entrada_visitado[MAX_NOS] = {0};
+            BuscaDFS (adj_reverso, noInicial, entrada_visitado);
             
             for (int i = 1; i <= N; i++) {
-                if (!visited_in[i]) {
-                    is_strongly_connected = false;
+                if (!entrada_visitado[i]) {
+                    conexaoForte = 0;
                     break;
                 }
             }
         }
         
-        // 4. Saída
-        printf("%d\n", is_strongly_connected ? 1 : 0);
+        printf ("%d\n", conexaoForte ? 1 : 0);
 
-        // 5. Limpeza de Memória (essencial para evitar TLE/MLE em múltiplos casos)
-        free_adj_list(adj_original);
-        free_adj_list(adj_reverse);
+        LimparLista (adj_original);
+        LimparLista (adj_reverso);
     }
     
     return 0;

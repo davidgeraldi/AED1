@@ -1,10 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void AtualizarVetor(int v[], int tamanho) {
-    int aux = 0;
-    aux = v[1];
-
+void AtualizarVetor (int v[], int tamanho) {
     for (int j = 1; j < tamanho; j++) {
         v[j - 1] = v[j];
     }
@@ -27,7 +24,7 @@ int main() {
         }
         qtdDescartados = 0;
 
-        scanf("%d", &tamanho);
+        scanf ("%d", &tamanho);
         tam = tamanho;
 
         if (tam != 0) {
@@ -42,16 +39,16 @@ int main() {
                 tamanho--;
             }
             
-            printf("Discarded cards: ");
+            printf ("Discarded cards: ");
             for (int i = 0; i < qtdDescartados; i++) {
                 if (i < (qtdDescartados - 1)) {
-                    printf("%d, ", descartados[i]);
+                    printf ("%d, ", descartados[i]);
                 }
                 else {
-                    printf("%d\n", descartados[i]);
+                    printf ("%d\n", descartados[i]);
                 }
             }
-            printf("Remaining card: %d\n", vetor[0]);
+            printf ("Remaining card: %d\n", vetor[0]);
         }
     }
 

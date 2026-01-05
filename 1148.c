@@ -7,26 +7,26 @@
 
 // Matrizes globais para as duas etapas:
 // 1. Matriz de Adjacência de Tempo (para cálculo final)
-int time_adj[MAX_CIDADES][MAX_CIDADES];
+int tempo_adj[MAX_CIDADES][MAX_CIDADES];
 
 // 2. Matriz de Adjacência de Conectividade (para identificar países)
-int conn_adj[MAX_CIDADES][MAX_CIDADES];
+int conex_adj[MAX_CIDADES][MAX_CIDADES];
 
 // --- Algoritmo de Floyd-Warshall ---
 
 /**
- * @brief Aplica o algoritmo de Floyd-Warshall na matriz 'matrix'.
- * @param N Número de cidades.
- * @param matrix A matriz de distâncias/tempos.
+ * brief Aplica o algoritmo de Floyd-Warshall na matriz 'matriz'.
+ * param N Número de cidades.
+ * param matriz A matriz de distâncias/tempos.
  */
-void floyd_warshall(int N, int matrix[MAX_CIDADES][MAX_CIDADES]) {
+void floyd_warshall(int N, int matriz[MAX_CIDADES][MAX_CIDADES]) {
     for (int k = 1; k <= N; k++) {
         for (int i = 1; i <= N; i++) {
             for (int j = 1; j <= N; j++) {
                 // Apenas relaxa se os caminhos intermediários não forem infinitos
-                if (matrix[i][k] != INF && matrix[k][j] != INF) {
-                    if (matrix[i][k] + matrix[k][j] < matrix[i][j]) {
-                        matrix[i][j] = matrix[i][k] + matrix[k][j];
+                if (matriz[i][k] != INF && matriz[k][j] != INF) {
+                    if (matriz[i][k] + matriz[k][j] < matriz[i][j]) {
+                        matriz[i][j] = matriz[i][k] + matriz[k][j];
                     }
                 }
             }
@@ -38,7 +38,7 @@ void floyd_warshall(int N, int matrix[MAX_CIDADES][MAX_CIDADES]) {
 
 int main() {
     int N, E; // N: Cidades, E: Acordos (rotas impressas)
-    int case_count = 0;
+    int casos = 0;
     
     // Loop principal para múltiplos casos de teste. Finaliza com N=E=0.
     while (scanf("%d %d", &N, &E) == 2 && (N != 0 || E != 0)) {
@@ -46,7 +46,7 @@ int main() {
         // Inicialização: INF para todos os caminhos. 0 para i -> i.
         for (int i = 1; i <= N; i++) {
             for (int j = 1; j <= N; j++) {
-                time_adj[i][j] = conn_adj[i][j] = (i == j) ? 0 : INF;
+                tempo_adj[i][j] = conex_adj[i][j] = (i == j) ? 0 : INF;
             }
         }
 
@@ -56,18 +56,18 @@ int main() {
             if (scanf("%d %d %d", &X, &Y, &H) != 3) break;
             
             // O custo de H horas (impresso) é o tempo máximo.
-            if (H < time_adj[X][Y]) {
-                time_adj[X][Y] = H;
+            if (H < tempo_adj[X][Y]) {
+                tempo_adj[X][Y] = H;
             }
             
             // Para conectividade, usamos custo 1 (apenas para verificar se há caminho)
-            conn_adj[X][Y] = 1;
+            conex_adj[X][Y] = 1;
         }
 
         // --- ETAPA 1: Identificação de Países ---
         
         // Rodar Floyd-Warshall na matriz de conectividade
-        floyd_warshall(N, conn_adj);
+        floyd_warshall(N, conex_adj);
         
         // --- ETAPA 2: Aplicação da Regra de Tempo Zero ---
         
@@ -75,14 +75,14 @@ int main() {
             for (int j = 1; j <= N; j++) {
                 
                 // Se A e B estão no mesmo país:
-                // Há caminho de A->B (conn_adj[i][j] < INF) E
-                // Há caminho de B->A (conn_adj[j][i] < INF).
-                if (conn_adj[i][j] != INF && conn_adj[j][i] != INF) {
+                // Há caminho de A->B (conex_adj[i][j] < INF) E
+                // Há caminho de B->A (conex_adj[j][i] < INF).
+                if (conex_adj[i][j] != INF && conex_adj[j][i] != INF) {
                     
                     // Comunicação é instantânea (0 horas) em ambas as direções.
                     // Isso domina o tempo de envio da carta impressa H.
-                    time_adj[i][j] = 0;
-                    time_adj[j][i] = 0;
+                    tempo_adj[i][j] = 0;
+                    tempo_adj[j][i] = 0;
                 }
             }
         }
@@ -90,7 +90,7 @@ int main() {
         // --- ETAPA 3: Cálculo do Caminho Mínimo Final ---
         
         // Rodar Floyd-Warshall na matriz de tempo
-        floyd_warshall(N, time_adj);
+        floyd_warshall(N, tempo_adj);
         
         // --- Processamento das Consultas ---
         
@@ -101,19 +101,19 @@ int main() {
             int O, D; // O: Origem, D: Destino
             if (scanf("%d %d", &O, &D) != 2) break;
             
-            int min_time = time_adj[O][D];
+            int tempoMinimo = tempo_adj[O][D];
             
             // Saída
-            if (min_time >= INF) {
+            if (tempoMinimo >= INF) {
                 printf("Nao e possivel entregar a carta\n");
             } else {
-                printf("%d\n", min_time);
+                printf("%d\n", tempoMinimo);
             }
         }
         
         // Imprime uma linha em branco após cada caso de teste.
         printf("\n");
-        case_count++;
+        casos++;
     }
 
     return 0;
