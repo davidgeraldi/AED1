@@ -9,18 +9,18 @@ int main() {
     scanf("%d", &N); 
     getchar();
 
-    for (int i = 0; i < N; i++) { // loop geral
-        for (int z = 0; z < 9; z++) { //inicializa os contador com valor zero
+    for (int i = 0; i < N; i++) { 
+        for (int z = 0; z < 9; z++) { 
             contador[z] = 0;
         }
 
-        for (int j = 0; j < 9; j++) { // ler cada linha da matriz
+        for (int j = 0; j < 9; j++) { 
             aux = 0;
-            fgets(buffer, sizeof(buffer), stdin); // linha do usuário
-            char *texto = strtok(buffer, " "); // separar a string a cada espaço
+            fgets (buffer, sizeof (buffer), stdin); 
+            char *texto = strtok (buffer, " "); // separar a string a cada espaço
             while (texto != NULL) {
                 matriz[j][aux] = atoi(texto); // Converte o número de char para int e armazena no vetor matriz
-                texto = strtok(NULL, " ");
+                texto = strtok (NULL, " ");
                 aux++;
             }
         }
@@ -51,10 +51,10 @@ int main() {
             }
         }
 
-        if (sucesso == 1) {printf("Instancia %d\nNAO\n\n", i + 1);}
-        else{printf("Instancia %d\nSIM\n\n", i + 1);}
+        if (sucesso == 1) { printf ("Instancia %d\nNAO\n\n", i + 1); }
+        else{ printf ("Instancia %d\nSIM\n\n", i + 1); }
         sucesso = 0;
-    } // fim loop geral
+    }
 
     return 0;
 }

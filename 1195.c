@@ -2,8 +2,7 @@
 #include <stdlib.h> 
 #include <string.h>
 
-// Define o limite máximo de nós que o array de resultado pode ter
-#define MAX_NODES 1000
+#define MAX_NOS 1000
 
 struct cel {
     int valor;
@@ -14,13 +13,12 @@ struct cel {
 typedef struct cel no;
 typedef no *arvore;
 
-// Array global para armazenar os resultados da travessia
-int resultado_travessia[MAX_NODES];
-// Variável global para rastrear o índice atual no array de resultado
-int indice_resultado;
+int resultado_travessia[MAX_NOS];
+
+int indice_atual;
 
 no *Criarno (int num) {
-    no *novo = (no *)malloc (sizeof (no));
+    no *novo = malloc (sizeof (no));
     if (novo == NULL) exit(1);
     novo->valor = num;
     novo->dir = NULL;
@@ -42,53 +40,47 @@ arvore Inserir (arvore r, no *novo) {
     return r;
 }
 
-// Funções de Percurso para Armazenamento
-
-// Percurso Em Ordem (ERD) - Esquerda Raiz Direita
-void TraveERD (arvore r) {
+// Infixo ERD - Esquerda Raiz Direita
+void BuscaERD (arvore r) {
     if (r != NULL) {
-        TraveERD (r->esq);
-        resultado_travessia[indice_resultado++] = r->valor;
-        TraveERD (r->dir);
+        BuscaERD (r->esq);
+        resultado_travessia[indice_atual++] = r->valor;
+        BuscaERD (r->dir);
     }
 }
 
-// Percurso Pré-ordem (RED) - Raiz Esquerda Direita
-void TraveRED (arvore r) {
+// Prefixo RED - Raiz Esquerda Direita
+void BuscaRED (arvore r) {
     if (r != NULL) {
-        resultado_travessia[indice_resultado++] = r->valor;
-        TraveRED(r->esq);
-        TraveRED(r->dir);
+        resultado_travessia[indice_atual++] = r->valor;
+        BuscaRED (r->esq);
+        BuscaRED (r->dir);
     }
 }
 
-// Percurso Pós-ordem (EDR) - Esquerda Direita Raiz
-void TraveEDR (arvore r) {
+// Pósfixo EDR - Esquerda Direita Raiz
+void BuscaEDR (arvore r) {
     if (r != NULL) {
-        TraveEDR(r->esq);
-        TraveEDR (r->dir);
-        resultado_travessia[indice_resultado++] = r->valor;
+        BuscaEDR (r->esq);
+        BuscaEDR (r->dir);
+        resultado_travessia[indice_atual++] = r->valor;
     }
 }
-
-// Função de Liberação de Memória
 
 void LimparArvore (arvore r) {
-    if (r != NULL){
+    if (r != NULL) {
         LimparArvore (r->esq);
         LimparArvore (r->dir);
         free (r);
     }
 }
 
-// Função Auxiliar de Impressão
-
-void ImprimeResultado(const char *label) {
-    printf("%s:", label);
-    for (int k = 0; k < indice_resultado; k++) {
-        printf(" %d", resultado_travessia[k]);
+void ImprimeResultado (const char *palavra) {
+    printf ("%s:", palavra);
+    for (int k = 0; k < indice_atual; k++) {
+        printf (" %d", resultado_travessia[k]);
     }
-    printf("\n");
+    printf ("\n");
 }
 
 int main () {
@@ -104,26 +96,22 @@ int main () {
             r = Inserir (r, Criarno (num));
         } 
         
-        printf("Case %d:\n", i);
+        printf ("Case %d:\n", i);
         
-        // Percurso Pré-ordem (RED)
-        indice_resultado = 0;
-        TraveRED(r);
-        ImprimeResultado("Pre.");
+        indice_atual = 0;
+        BuscaRED (r);
+        ImprimeResultado ("Pre.");
         
-        // Percurso Em Ordem (ERD)
-        indice_resultado = 0;
-        TraveERD (r); 
-        ImprimeResultado("In..");
+        indice_atual = 0;
+        BuscaERD (r); 
+        ImprimeResultado ("In..");
 
-        // Percurso Pós-ordem (EDR)
-        indice_resultado = 0;
-        TraveEDR (r); 
-        ImprimeResultado("Post"); // Nota: O problema 1195 pede "Post."
+        indice_atual = 0;
+        BuscaEDR (r); 
+        ImprimeResultado ("Post"); 
         
-        // Liberação de memória
         LimparArvore (r);
-        printf("\n");
+        printf ("\n");
         i++;
         
     } while (i <= C);

@@ -5,10 +5,10 @@
 #define MAX 10005
 
 int vis[MAX];
-int q[MAX];
-int d[MAX];
+int fila[MAX];
+int dist[MAX];
 
-int inverte(int x) {
+int Inverter (int x) {
     int r = 0;
     while (x > 0) {
         r = r * 10 + (x % 10);
@@ -17,38 +17,38 @@ int inverte(int x) {
     return r;
 }
 
-int bfs(int a, int b) {
-    int head = 0, tail = 0;
+int BuscaBFS (int a, int b) {
+    int inicio_fila = 0, fim_fila = 0;
 
-    for (int i = 0; i < MAX; i++) vis[i] = 0;
+    for (int i = 0; i < MAX; i++) {
+        vis[i] = 0;
+    } 
 
-    q[tail] = a;
-    d[tail] = 0;
-    tail++;
+    fila[fim_fila] = a;
+    dist[fim_fila] = 0;
+    fim_fila++;
     vis[a] = 1;
 
-    while (head < tail) {
-        int u = q[head];
-        int dist = d[head];
-        head++;
+    while (inicio_fila < fim_fila) {
+        int atual = fila[inicio_fila];
+        int distancia = dist[inicio_fila];
+        inicio_fila++;
 
-        if (u == b) return dist;
+        if (atual == b) return distancia;
 
-        // operação +1
-        if (u + 1 < MAX && !vis[u+1]) {
-            vis[u+1] = 1;
-            q[tail] = u + 1;
-            d[tail] = dist + 1;
-            tail++;
+        if (atual + 1 < MAX && !vis[atual+1]) {
+            vis[atual+1] = 1;
+            fila[fim_fila] = atual + 1;
+            dist[fim_fila] = distancia + 1;
+            fim_fila++;
         }
 
-        // operação invert
-        int v = inverte(u);
-        if (v < MAX && !vis[v]) {
-            vis[v] = 1;
-            q[tail] = v;
-            d[tail] = dist + 1;
-            tail++;
+        int invertido = Inverter (atual);
+        if (invertido < MAX && !vis[invertido]) {
+            vis[invertido] = 1;
+            fila[fim_fila] = invertido;
+            dist[fim_fila] = distancia + 1;
+            fim_fila++;
         }
     }
 
@@ -59,8 +59,8 @@ int main() {
     int T, A, B;
     scanf("%d", &T);
     while (T--) {
-        scanf("%d %d", &A, &B);
-        printf("%d\n", bfs(A, B));
+        scanf ("%d %d", &A, &B);
+        printf ("%d\n", BuscaBFS (A, B));
     }
     return 0;
 }

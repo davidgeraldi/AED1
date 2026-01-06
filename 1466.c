@@ -2,50 +2,51 @@
 #include <stdlib.h>
 
 typedef struct no {
-    int v;
-    struct no *l, *r;
+    int valor;
+    struct no *esq, *dir;
 } no;
 
-no* ins(no *t, int x) {
-    if (!t) {
-        t = (no*) malloc(sizeof(no));
-        t->v = x;
-        t->l = t->r = NULL;
-        return t;
+no* Inserir (no *novo, int removido) {
+    if (!novo) {
+        novo = malloc (sizeof (no));
+        novo->valor = removido;
+        novo->esq = novo->dir = NULL;
+        return novo;
     }
-    if (x < t->v) t->l = ins(t->l, x);
-    else t->r = ins(t->r, x);
-    return t;
+    if (removido < novo->valor) novo->esq = Inserir (novo->esq, removido);
+    else novo->dir = Inserir (novo->dir, removido);
+    return novo;
 }
 
 typedef struct {
     no *d[2000];
-    int i, f;
+    int inicio, fim;
 } fila;
 
-void pf(no *t, int c) {
-    fila q;
-    q.i = q.f = 0;
+void BuscaEImprime (no *novo, int c) {
+    fila fl;
+    fl.inicio = fl.fim = 0;
 
-    q.d[q.f++] = t;
+    fl.d[fl.fim++] = novo;
 
-    printf("Case %d:\n", c);
+    printf ("Case %d:\n", c);
 
-    int first = 1;
-    while (q.i < q.f) {
-        no *x = q.d[q.i++];
+    int espaco = 1;
+    while (fl.inicio < fl.fim) {
+        no *removido = fl.d[fl.inicio++];
 
-        if (first) {
-            printf("%d", x->v);
-            first = 0;
-        } else {
-            printf(" %d", x->v);
+        if (espaco) {
+            printf ("%d", removido->valor);
+            espaco = 0;
+        } 
+        else {
+            printf (" %d", removido->valor);
         }
 
-        if (x->l) q.d[q.f++] = x->l;
-        if (x->r) q.d[q.f++] = x->r;
+        if (removido->esq) fl.d[fl.fim++] = removido->esq;
+        if (removido->dir) fl.d[fl.fim++] = removido->dir;
     }
-    printf("\n\n");
+    printf ("\n\n");
 }
 
 int main() {
@@ -55,14 +56,14 @@ int main() {
     for (int k = 1; k <= c; k++) {
         scanf("%d", &n);
 
-        no *t = NULL;
+        no *novo = NULL;
 
         for (i = 0; i < n; i++) {
             scanf("%d", &x);
-            t = ins(t, x);
+            novo = Inserir (novo, x);
         }
 
-        pf(t, k);
+        BuscaEImprime (novo, k);
     }
 
     return 0;

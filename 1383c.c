@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int eh_bloco_valido(int *bloco) {
+int EhBlocoValido (int *bloco) {
     int verificador[10] = {0};
     int i;
 
@@ -14,17 +14,17 @@ int eh_bloco_valido(int *bloco) {
     return 1;
 }
 
-int verifica_linhas(int *matriz) {
+int VerificarLinhas (int *matriz) {
     int i;
     for (i = 0; i < 9; i++) {
-        if (!eh_bloco_valido(matriz + i * 9)) {
+        if (!EhBlocoValido  (matriz + i * 9)) {
             return 0;
         }
     }
     return 1;
 }
 
-int verifica_colunas(int *matriz) {
+int VerificarColunas (int *matriz) {
     int i, j;
     int coluna_temp[9];
 
@@ -32,16 +32,16 @@ int verifica_colunas(int *matriz) {
         for (i = 0; i < 9; i++) {
             coluna_temp[i] = *(matriz + i * 9 + j);
         }
-        if (!eh_bloco_valido(coluna_temp)) {
+        if (!EhBlocoValido  (coluna_temp)) {
             return 0;
         }
     }
     return 1;
 }
 
-int verifica_sub_blocos(int *matriz) {
+int VerificarSubBlocos (int *matriz) {
     int i, j, k;
-    int bloco_temp[9];
+    int bloco_temp[9];// bloco temporario
 
     for (i = 0; i < 9; i += 3) {
         for (j = 0; j < 9; j += 3) {
@@ -51,7 +51,7 @@ int verifica_sub_blocos(int *matriz) {
                     bloco_temp[k++] = *(matriz + linha * 9 + col);
                 }
             }
-            if (!eh_bloco_valido(bloco_temp)) {
+            if (!EhBlocoValido  (bloco_temp)) {
                 return 0;
             }
         }
@@ -63,7 +63,7 @@ int main() {
     int n, k;
     scanf("%d", &n);
 
-    for (k = 1; k <= n; k++){
+    for (k = 1; k <= n; k++) {
         int sudoku[9][9];
         int i, j;
 
@@ -73,16 +73,17 @@ int main() {
             }
         }
         
-        int *ptr_sudoku = (int *)sudoku;
+        int *ptr_sudoku = (int *)sudoku; //ponteiro para o inicio da matriz
 
-        printf("Instancia %d\n", k);
+        printf ("Instancia %d\n", k);
 
-        if (verifica_linhas(ptr_sudoku) && verifica_colunas(ptr_sudoku) && verifica_sub_blocos(ptr_sudoku)) {
-            printf("SIM\n");
-        } else {
-            printf("NAO\n");
+        if (VerificarLinhas (ptr_sudoku) && VerificarColunas (ptr_sudoku) && VerificarSubBlocos (ptr_sudoku)) {
+            printf ("SIM\n");
+        } 
+        else {
+            printf ("NAO\n");
         }
-        printf("\n");
+        printf ("\n");
     }
 
     return 0;

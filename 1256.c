@@ -1,22 +1,23 @@
 #include <stdio.h>
 
+int tabela[1000][1000];
+int tamanho[1000] = {0};
+
 int main() {
     int T;
     scanf("%d", &T);
 
     while (T--) {
         int M, C;
-        scanf("%d %d", &M, &C);
+        scanf ("%d %d", &M, &C);
 
-        int tabela[1000][1000];
-        int tamanho[1000] = {0};
 
-        for (int i = 0; i < M; i++)
+        for (int i = 0; i < M; i++) {
             tamanho[i] = 0;    
-
-        for (int i = 0; i < C; i++) {
+        }
+        for (int j = 0; j < C; j++) {
             int x;
-            scanf("%d", &x);
+            scanf ("%d", &x);
 
             int h = x % M;
 
@@ -24,15 +25,16 @@ int main() {
         }
 
         for (int i = 0; i < M; i++) {
-            printf("%d ->", i);
+            printf ("%d ->", i);
             for (int j = 0; j < tamanho[i]; j++) {
-                printf(" %d ->", tabela[i][j]);
+                printf (" %d ->", tabela[i][j]);
             }
-            printf(" \\\n");
+            printf (" \\\n");
         }
 
-        if (T > 0)
-            printf("\n");
+        if (T > 0) {
+            printf ("\n");
+        }
     }
 
     return 0;
