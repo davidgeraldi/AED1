@@ -46,7 +46,7 @@ void BuscaDFS (No *adj_lista[], int u, int visitado[]) {
     }
 }
 
-int main() {
+int main () {
     
     int atual_N, atual_M;
 

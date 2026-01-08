@@ -7,7 +7,7 @@ int verificar (char *texto) {
     int aberto = 0, cont = 0;
 
     for (int i = 0; texto[i] != '\0'; i++) {
-        if (texto[i] == '<'){
+        if (texto[i] == '<') {
             aberto++;
         }
         else if (texto[i] == '>') {
@@ -20,7 +20,7 @@ int verificar (char *texto) {
     return cont;
 }
 
-int main() {
+int main () {
 
     int n;
     scanf ("%d", &n);

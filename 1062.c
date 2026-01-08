@@ -40,10 +40,10 @@ int main() {
             }
 
             if (ok) {
-                printf("Yes\n");
+                printf ("Yes\n");
             }
             else {
-                printf("No\n");
+                printf ("No\n");
             }
         }
     }

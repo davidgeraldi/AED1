@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main() {
+int main () {
     int x;
 
     while (1) {
@@ -8,7 +8,8 @@ int main() {
         if (x == 2002) {
             printf ("Acesso Permitido\n");
             break;
-        } else {
+        } 
+        else {
             printf ("Senha Invalida\n");
         }
     }

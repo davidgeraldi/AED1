@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void Merge(int vetor[], int l, int m, int r) {
+void Merge (int vetor[], int l, int m, int r) {
     int i, j, k;
     int n1 = m - l + 1; 
     int n2 = r - m;     
@@ -70,7 +70,7 @@ void Resolver () {
     free (alturas);
 }
 
-int main() {
+int main () {
     int NC;
     if (scanf("%d", &NC) != 1) return 0;
 

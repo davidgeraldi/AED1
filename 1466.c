@@ -49,7 +49,7 @@ void BuscaEImprime (no *novo, int c) {
     printf ("\n\n");
 }
 
-int main() {
+int main () {
     int c, n, x, i;
     scanf("%d", &c);
 

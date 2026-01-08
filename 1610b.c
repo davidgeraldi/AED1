@@ -58,7 +58,7 @@ void BuscaDFS (int u) {
     estados[u] = 2; 
 }
 
-int main() {
+int main () {
     int T; 
     if (scanf("%d", &T) != 1) return 0;
 

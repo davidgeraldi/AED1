@@ -6,7 +6,7 @@ char desenho[MAX][MAX];
 int vis[MAX][MAX];
 int coordX[MAX*MAX], coordY[MAX*MAX];
 
-int main() {
+int main () {
     int N, M;
     int i, j;
     int dx[4] = {1, -1, 0, 0};

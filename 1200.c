@@ -48,7 +48,7 @@ int Buscar (No* raiz, char valor) {
 void BuscaERD (No* no) {
     if (no == NULL) return;
     
-    BuscaERD(no->esq);
+    BuscaERD (no->esq);
     
     if (primeiro_elemento) {
         printf ("%c", no->valor);
@@ -91,7 +91,7 @@ void BuscaEDR (No* no) {
     }
 }
 
-int main() {
+int main () {
     No* raiz = NULL;
     char linha[20]; 
     char comando[10];

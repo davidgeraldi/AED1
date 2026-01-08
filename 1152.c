@@ -3,7 +3,7 @@
 
 typedef struct {
     int a, b; 
-    int p;    // peso ou custo da aresta
+    int p;    // peso da aresta
 } Aresta;
 
 int p[200000];
@@ -35,7 +35,7 @@ int Busca (int x) {
     return p[x] = Busca (p[x]);
 }
 
-int main() {
+int main () {
     int n, m, i;
 
     while (1) {
@@ -44,8 +44,9 @@ int main() {
         Aresta v[m];          
         double tot = 0; 
 
-        for (i = 0; i < n; i++)
+        for (i = 0; i < n; i++) {
             p[i] = i;
+        }
 
         for (i = 0; i < m; i++) {
             scanf ("%d %d %d", &v[i].a, &v[i].b, &v[i].p);

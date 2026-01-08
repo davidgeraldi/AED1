@@ -15,13 +15,13 @@ int visitado [MAX_NOS];
 
 void addAresta (int u, int v) {
     No *novoNo_uv = malloc (sizeof (No));
-    if (novoNo_uv == NULL) exit (1);
+    if (novoNo_uv == NULL) return;
     novoNo_uv->vizinho = v;
     novoNo_uv->proximo = adj[u];
     adj[u] = novoNo_uv;
 
     No *novoNo_vu = malloc (sizeof (No));
-    if (novoNo_vu == NULL) exit (1);
+    if (novoNo_vu == NULL) return;
     novoNo_vu->vizinho = u;
     novoNo_vu->proximo = adj[v];
     adj[v] = novoNo_vu;
@@ -36,7 +36,7 @@ void DFS (int u) {
         
         if (!visitado[v]) {
             movimentos++; 
-            DFS(v);       
+            DFS (v);       
             movimentos++; 
         }
         
@@ -80,12 +80,12 @@ void resolverLabirinto () {
     }
 }
 
-int main() {
+int main () {
     int T;
     if (scanf("%d", &T) != 1) return 0;
     
     while (T--) {
-        resolverLabirinto();
+        resolverLabirinto ();
     }
     return 0;
 }

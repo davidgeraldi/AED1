@@ -55,7 +55,7 @@ int BuscaBFS (int a, int b) {
     return -1;
 }
 
-int main() {
+int main () {
     int T, A, B;
     scanf("%d", &T);
     while (T--) {

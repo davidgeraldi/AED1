@@ -37,7 +37,7 @@ int verificar (char *texto) {
             Inserir (&minhaPilha, '(');
         }
         else if (texto[i] == ')') {
-            if (EstaVazia(minhaPilha)) {
+            if (EstaVazia (minhaPilha)) {
                 verifica = -1;
                 break;
             } 

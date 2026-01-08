@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main() {
+int main () {
     double f[61];
     int t, n, i;
 

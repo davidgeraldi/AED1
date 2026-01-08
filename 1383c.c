@@ -59,7 +59,7 @@ int VerificarSubBlocos (int *matriz) {
     return 1;
 }
 
-int main() {
+int main () {
     int n, k;
     scanf("%d", &n);
 

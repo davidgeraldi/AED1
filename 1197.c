@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main() {
+int main () {
   int v, t;
 
   while (scanf("%d %d", &v, &t) != EOF) {

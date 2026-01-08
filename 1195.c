@@ -19,7 +19,7 @@ int indice_atual;
 
 no *Criarno (int num) {
     no *novo = malloc (sizeof (no));
-    if (novo == NULL) exit(1);
+    if (novo == NULL) return;
     novo->valor = num;
     novo->dir = NULL;
     novo->esq = NULL;

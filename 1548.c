@@ -15,7 +15,7 @@ void QuickSort (int v[], int esquerda, int direita) {
             j--;
         }
 
-        if (i <= j){
+        if (i <= j) {
             int temp = v[i];
             v[i] = v[j];
             v[j] = temp;
@@ -32,7 +32,7 @@ void QuickSort (int v[], int esquerda, int direita) {
     }
 }
 
-int main() {
+int main () {
     int N, contador;
     scanf("%d", &N);
 

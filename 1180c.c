@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main() {
+int main () {
     int n, menor = 0, p = 0, *ponteiro;
     scanf("%d", &n);
 
@@ -25,10 +25,10 @@ int main() {
         }
     }
 
-    printf("Menor valor: %d\n", menor);
-    printf("Posicao: %d\n", p);
+    printf ("Menor valor: %d\n", menor);
+    printf ("Posicao: %d\n", p);
 
-    free(x);
+    free (x);
 
     return 0;
 }

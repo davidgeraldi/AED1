@@ -4,7 +4,7 @@
 
 #define INFINITO 1000000 
 
-int main() {
+int main () {
     int N, M, C, K;
     int u, v, p;
 
@@ -40,7 +40,6 @@ int main() {
             menor = INFINITO;
             atual = -1;
 
-            // Loop para encontrar a cidade com a menor distância não visitada
             for (j = 0; j < N; j++) {
                 if (visitado[j] == 0 && distancia[j] < menor) {
                     menor = distancia[j];

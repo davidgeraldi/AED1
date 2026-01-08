@@ -3,7 +3,7 @@
 int tabela[1000][1000];
 int tamanho[1000] = {0};
 
-int main() {
+int main () {
     int T;
     scanf("%d", &T);
 

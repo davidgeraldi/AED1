@@ -53,7 +53,7 @@ void Resolver () {
     free (alturas);
 }
 
-int main() {
+int main () {
     int NC;
     if (scanf("%d", &NC) != 1) return 0;
     

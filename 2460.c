@@ -17,7 +17,7 @@ int main () {
 
     int saidas[M];
 
-    for (int i = 0; i < M; i++){
+    for (int i = 0; i < M; i++) {
         scanf("%d", &saidas[i]);
     }
 

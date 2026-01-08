@@ -4,8 +4,8 @@ int g[30][30];
 int vis[30];
 int v, e;
 
-int comp_nos[30]; // Armazena temporariamente os nós de uma componente encontrada.
-int qtdNos; // Quantos nós existem na componente atual
+int comp_nos[30]; 
+int qtdNos; 
 
 void BuscaDFS (int u) {
     vis[u] = 1;
@@ -15,7 +15,7 @@ void BuscaDFS (int u) {
     }
 }
 
-void OrdenInser (int n) { //insertion sort
+void OrdenInser (int n) { 
     for (int i = 1; i < n; i++) {
         int chave = comp_nos[i];
         int j = i - 1;
@@ -27,7 +27,7 @@ void OrdenInser (int n) { //insertion sort
     }
 }
 
-int main() {
+int main () {
     int t;
     if (scanf("%d", &t) != 1) return 0;
 
@@ -47,7 +47,7 @@ int main() {
             g[x][y] = g[y][x] = 1;
         }
 
-        printf ("caso #%d:\n", caso);
+        printf ("Case #%d:\n", caso);
 
         int comps = 0;
 

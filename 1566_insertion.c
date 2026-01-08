@@ -39,17 +39,17 @@ void Resolver () {
     for (int i = 0; i < N; i++) {
         printf("%d", alturas[i]); 
         if (i == N - 1) {
-            printf(""); 
+            printf (""); 
         } 
         else {
-            printf(" "); 
+            printf (" "); 
         }
     }
     printf ("\n");
     free (alturas);
 }
 
-int main() {
+int main () {
     int NC;
     
     if (scanf("%d", &NC) != 1) return 0;

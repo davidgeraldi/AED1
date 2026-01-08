@@ -13,7 +13,7 @@ int verificar (char *texto) {
     return aberto;
 }
 
-int main() {
+int main () {
 
     char expressao [1001], *texto;
     int verificador;

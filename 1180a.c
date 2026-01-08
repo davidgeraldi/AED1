@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main() {
+int main () {
     int n, menor = 0, p = 0;
     scanf ("%d", &n);
     int x[n];

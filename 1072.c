@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-int main() {
+int main () {
     int n, x, i;
     int in = 0, out = 0;
 

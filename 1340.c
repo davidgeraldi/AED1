@@ -29,7 +29,7 @@ void DescerHeap (int heap[], int n, int i) {
     }
 }
 
-int main() {
+int main () {
     int n;
     while (scanf("%d", &n) != EOF) {
         int pilha[1005], topo_pilha = 0;

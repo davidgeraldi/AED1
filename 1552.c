@@ -103,7 +103,7 @@ void Resolver () {
     printf("%.2f\n", resultado_m);
 }
 
-int main() {
+int main () {
     int C;
     if (scanf("%d", &C) != 1) return 0;
     

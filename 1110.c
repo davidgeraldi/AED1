@@ -13,7 +13,7 @@ void AtualizarVetor (int v[], int tamanho) {
     }
 }
 
-int main() {
+int main () {
 
     int tamanho, tam = 1, qtdDescartados = 0;
     int vetor[50], descartados[50];
@@ -35,7 +35,7 @@ int main() {
             while (tamanho > 1) {
                 descartados[qtdDescartados] = vetor[0]; 
                 qtdDescartados++;
-                AtualizarVetor(vetor, tamanho);
+                AtualizarVetor (vetor, tamanho);
                 tamanho--;
             }
             
