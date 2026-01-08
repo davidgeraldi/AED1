@@ -8,21 +8,36 @@ typedef struct {
 Aresta arestas[50005];
 int pai[40005];
 
-int compare(const void *a, const void *b) {
-    Aresta *A = (Aresta *)a;
-    Aresta *B = (Aresta *)b;
-    return A->w - B->w;
+void QuickSort (int inicio, int fim) {
+    int i = inicio, j = fim;
+    int pivo = arestas[(inicio + fim) / 2].w;
+    Aresta aux;
+    while (i <= j) {
+        while (arestas[i].w < pivo) i++;
+        while (arestas[j].w > pivo) j--;
+        
+        if (i <= j) {
+            aux = arestas[i];
+            arestas[i] = arestas[j];
+            arestas[j] = aux;
+            i++;
+            j--;
+        }
+    }
+
+    if (inicio < j) QuickSort (inicio, j);
+    if (i < fim) QuickSort (i, fim);
 }
 
-int find(int i) {
+int Encontrar (int i) {
     if (pai[i] == i)
         return i;
-    return pai[i] = find(pai[i]);
+    return pai[i] = Encontrar (pai[i]);
 }
 
-int main() {
+int main () {
     int M, N;
-    int total_distancia;
+    int dist_total;
     int i; 
     
     int raiz_u, raiz_v;
@@ -33,25 +48,27 @@ int main() {
             scanf("%d %d %d", &arestas[i].u, &arestas[i].v, &arestas[i].w);
         }
 
-        qsort(arestas, N, sizeof(Aresta), compare);
+        if (N > 0) {
+            QuickSort (0, N - 1);
+        }
 
         for (i = 0; i < M; i++) {
             pai[i] = i;
         }
 
-        total_distancia = 0;
+        dist_total = 0;
 
         for (i = 0; i < N; i++) {
-            raiz_u = find(arestas[i].u);
-            raiz_v = find(arestas[i].v);
+            raiz_u = Encontrar (arestas[i].u);
+            raiz_v = Encontrar (arestas[i].v);
 
             if (raiz_u != raiz_v) {
                 pai[raiz_u] = raiz_v;
-                total_distancia += arestas[i].w;
+                dist_total += arestas[i].w;
             }
         }
 
-        printf("%d\n", total_distancia);
+        printf ("%d\n", dist_total);
     }
 
     return 0;

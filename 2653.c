@@ -1,33 +1,42 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include <string.h>
+#include <stdlib.h>
 
-#define MAX 200000     // máximo bem seguro
-#define L   60         // tamanho máx da string
-
-char v[MAX][L];
-
-int cmp(const void *a, const void *b) {
-    return strcmp((char*)a, (char*)b);
+// Função de comparação para o qsort
+int comparar(const void *a, const void *b) {
+    return strcmp((char *)a, (char *)b);
 }
 
 int main() {
-    int n = 0;
+    // Definimos um limite razoável. O enunciado diz que a soma dos tamanhos é 10^6.
+    // Para simplificar, vamos usar um array que suporte as entradas.
+    static char joias[1000000][200]; // static para não estourar a pilha (stack)
+    int total_lido = 0;
 
-    while (scanf("%s", v[n]) != EOF) {
-        n++;
+    // Lendo cada joia até o final do arquivo (EOF)
+    while (scanf("%s", joias[total_lido]) != EOF) {
+        total_lido++;
     }
 
-    qsort(v, n, L, cmp);
+    // Se não houver joias, o resultado é 0
+    if (total_lido == 0) {
+        printf("0\n");
+        return 0;
+    }
 
-    int ans = 1;
-    for (int i = 1; i < n; i++) {
-        if (strcmp(v[i], v[i-1]) != 0) {
-            ans++;
+    // Ordena todas as strings alfabeticamente
+    qsort(joias, total_lido, sizeof(joias[0]), comparar);
+
+    // Conta quantos tipos diferentes existem
+    int tipos_distintos = 1; // Começa em 1 se houver ao menos uma joia
+    for (int i = 1; i < total_lido; i++) {
+        // Se a joia atual for diferente da anterior, temos um novo tipo
+        if (strcmp(joias[i], joias[i-1]) != 0) {
+            tipos_distintos++;
         }
     }
 
-    printf("%d\n", ans);
+    printf("%d\n", tipos_distintos);
 
     return 0;
 }

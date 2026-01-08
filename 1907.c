@@ -2,64 +2,64 @@
 
 #define MAX 2005
 
-char g[MAX][MAX];
+char desenho[MAX][MAX];
 int vis[MAX][MAX];
-int sx[MAX*MAX], sy[MAX*MAX];
+int coordX[MAX*MAX], coordY[MAX*MAX];
 
 int main() {
-    int n, m;
+    int N, M;
     int i, j;
     int dx[4] = {1, -1, 0, 0};
     int dy[4] = {0, 0, 1, -1};
 
-    while (scanf("%d %d", &n, &m) == 2) {
-        for (i = 0; i < n; i++) {
-            scanf("%s", g[i]);
+    while (scanf("%d %d", &N, &M) == 2) {
+        for (i = 0; i < N; i++) {
+            scanf("%s", desenho[i]);
         }
 
-        for (i = 0; i < n; i++)
-            for (j = 0; j < m; j++)
+        for (i = 0; i < N; i++) {
+            for (j = 0; j < M; j++) {
                 vis[i][j] = 0;
+            }
+        }
+        int cont = 0;
 
-        int ans = 0;
+        for (i = 0; i < N; i++) {
+            for (j = 0; j < M; j++) {
+                if (!vis[i][j] && desenho[i][j] == '.') {
 
-        for (i = 0; i < n; i++) {
-            for (j = 0; j < m; j++) {
-                if (!vis[i][j] && g[i][j] == '.') {
-
-                    int top = 0;
-                    sx[top] = i;
-                    sy[top] = j;
-                    top++;
+                    int topo = 0;
+                    coordX[topo] = i;
+                    coordY[topo] = j;
+                    topo++;
                     vis[i][j] = 1;
 
-                    while (top > 0) {
-                        top--;
-                        int x = sx[top];
-                        int y = sy[top];
+                    while (topo > 0) {
+                        topo--;
+                        int x = coordX[topo];
+                        int y = coordY[topo];
 
                         int k;
                         for (k = 0; k < 4; k++) {
-                            int nx = x + dx[k];
-                            int ny = y + dy[k];
+                            int proxX = x + dx[k];
+                            int proxY = y + dy[k];
 
-                            if (nx >= 0 && nx < n && ny >= 0 && ny < m) {
-                                if (!vis[nx][ny] && g[nx][ny] == '.') {
-                                    vis[nx][ny] = 1;
-                                    sx[top] = nx;
-                                    sy[top] = ny;
-                                    top++;
+                            if (proxX >= 0 && proxX < N && proxY >= 0 && proxY < M) {
+                                if (!vis[proxX][proxY] && desenho[proxX][proxY] == '.') {
+                                    vis[proxX][proxY] = 1;
+                                    coordX[topo] = proxX;
+                                    coordY[topo] = proxY;
+                                    topo++;
                                 }
                             }
                         }
                     }
-
-                    ans++;
+                    cont++;
                 }
             }
         }
 
-        printf("%d\n", ans);
+        printf ("%d\n", cont);
     }
 
     return 0;

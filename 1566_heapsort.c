@@ -1,64 +1,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// Função auxiliar para trocar dois elementos
-void swap(int *a, int *b) {
+void Trocar (int *a, int *b) {
     int temp = *a;
     *a = *b;
     *b = temp;
 }
 
-// Função que transforma o sub-array enraizado no índice i em um Max-Heap
-void heapify(int arr[], int n, int i) {
-    int maior = i;       // Inicializa o maior como a raiz
-    int esq = 2 * i + 1; // Índice do filho esquerdo
-    int dir = 2 * i + 2; // Índice do filho direito
+void TransformarEmHeap (int vetor[], int n, int i) {
+    int maior = i;       
+    int esq = 2 * i + 1; 
+    int dir = 2 * i + 2; 
 
-    if (esq < n && arr[esq] > arr[maior]) maior = esq;
-    if (dir < n && arr[dir] > arr[maior]) maior = dir;
+    if (esq < n && vetor[esq] > vetor[maior]) maior = esq;
+    if (dir < n && vetor[dir] > vetor[maior]) maior = dir;
 
-    // Se o maior não for a raiz
     if (maior != i) {
-        swap(&arr[i], &arr[maior]);
-        heapify(arr, n, maior); // Chama recursivamente
+        Trocar (&vetor[i], &vetor[maior]);
+        TransformarEmHeap (vetor, n, maior); 
     }
 }
 
-// Função principal do Heap Sort
-void heapSort(int arr[], int n) {
-    // 1. Constrói o Max-Heap
+void HeapSort (int vetor[], int n) {
     for (int i = n / 2 - 1; i >= 0; i--) {
-        heapify(arr, n, i);
+        TransformarEmHeap (vetor, n, i);
     }
 
-    // 2. Extrai elementos um por um
     for (int i = n - 1; i > 0; i--) {
-        swap(&arr[0], &arr[i]); // Move a raiz (o maior) para o final
-        heapify(arr, i, 0);      // Chama heapify no heap reduzido (tamanho i)
+        Trocar (&vetor[0], &vetor[i]); 
+        TransformarEmHeap (vetor, i, 0);  
     }
 }
 
-void solve_heapsort() {
+void ResolverHeapSort () {
     int N;
     if (scanf("%d", &N) != 1) return;
 
-    int *alturas = (int *)malloc(N * sizeof(int));
+    int *alturas = malloc (N * sizeof (int));
     if (alturas == NULL) return;
 
     for (int i = 0; i < N; i++) {
         if (scanf("%d", &alturas[i]) != 1) { free(alturas); return; }
     }
 
-    // Chamada do Heap Sort
-    heapSort(alturas, N); 
+    HeapSort (alturas, N); 
 
-    // Impressão da Saída
     for (int i = 0; i < N; i++) {
-        printf("%d%s", alturas[i], (i == N - 1) ? "" : " ");
+        printf ("%d%s", alturas[i], (i == N - 1) ? "" : " ");
     }
-    printf("\n");
+    printf ("\n");
 
-    free(alturas);
+    free (alturas);
 }
 
 int main() {
@@ -66,7 +58,7 @@ int main() {
     if (scanf("%d", &NC) != 1) return 0;
 
     while (NC--) {
-        solve_heapsort();
+        ResolverHeapSort ();
     }
 
     return 0;
